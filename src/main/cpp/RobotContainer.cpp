@@ -5,7 +5,8 @@
 #include "RobotContainer.h"
 
 #include <frc2/command/button/Trigger.h>
-
+#include <frc2/command/Commands.h>
+#include "subsystems/SubShooter.h"
 #include "commands/Autos.h"
 #include "commands/ExampleCommand.h"
 
@@ -18,7 +19,9 @@ RobotContainer::RobotContainer() {
 
 void RobotContainer::ConfigureBindings() {
   // Configure your trigger bindings here
-
+  using namespace frc2::cmd;
+    _controller.A().OnTrue(frc2::cmd::RunOnce([]{SubShooter::GetInstance().StartSpinning();}));
+    _controller.A().OnFalse(frc2::cmd::RunOnce([]{SubShooter::GetInstance().StopSpinning();}));
   // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
   frc2::Trigger([this] {
     return m_subsystem.ExampleCondition();
